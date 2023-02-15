@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="../css/materialize.css"  media="screen,projection"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Schedule Update</title>
+  <link rel="stylesheet" href="../pbl_css/scheduleupdate.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div id="update-message"></div>
+    <div>
+      <br><a href="/home" class="waves-effect waves-light btn-small"><i class="material-icons left">home</i>Home</a>
+    </div>
+    <div>
+      <br><a href="/schedule?uid=<%= uid %>&username=<%= username%>" class="waves-effect waves-light btn-small"><i class="material-icons left">keyboard_return</i>Schedule</a>
+    </div>
+  </div>
+</body>
+  <script>
+    var messageHtmlString= `<%- messageHtml %>`;
+    document.getElementById("update-message").innerHTML = messageHtmlString;
+  </script>
+</html>

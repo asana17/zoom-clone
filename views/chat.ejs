@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Socket.IO chat</title>
+    <link rel='stylesheet' href='./pbl_css/chat.css' />
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      <!--
+      var uid = "<%= uid %>";
+      $(function () {
+          var socket = io();
+          $('form').submit(function(e){
+            e.preventDefault(); // prevents page reloading
+            var message = {
+              content : $('#m').val(),
+              uid: uid
+            };
+            //socket.emit('chat message', $('#m').val());
+            socket.emit('chat message', message);
+            $('#m').val('');
+            return false;
+          });
+          socket.on('chat message', function(msg){
+            $('#messages').append($('<li>').text(`at ${msg.hour}:${msg.minute}, from ${msg.uname} : ${msg.content}`));
+          });
+      });
+      //-->
+    </script>
+  </body>
+</html>

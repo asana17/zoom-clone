@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+  <!--Let browser know website is optimized for mobile-->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>chat room</title>
+  <script defer src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="room-script.js" defer></script>
+  <title>Room</title>
+  <link rel='stylesheet' href='/pbl_css/room.css' />
+  <script src='CommentCoreLibrary.js'></script>
+
+  <link rel='stylesheet' href='style.css'/>
+
+</head>
+    <div class="z-depth-1" id="floatbar">
+      Video Chat Room
+    </div>
+<body>
+  <div id="video-grid" class='abp'>
+    <div id='my-comment-stage' class='container'></div>
+  </div>
+
+ <div class="grid-container">
+  <div class="northwest card light-blue lighten-5">
+    <div class="row">
+      <div class="card-content col s2 m2 xl3 light-blue darken-1" id="damalog">
+        <rh3>情</rh3> <rh3>報</rh3> <div class="re r3">?</div>
+      </div>
+      <div class="col s7 m10 l10 xl9">
+        <a id= "attbgn" class="btn-flat btn-large modal-trigger" href="#modal1">
+          <i class="large material-icons blu">group</i>
+        </a>
+        <label>Rood ID:<a id="room-id">ROOM_ID</a></label>
+        <p id="unm"> <%= userName %></p>
+
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal">
+          <div class="modal-content">
+            <rh4>Attendance Record of <rh4 id="rnum"><%= roomName %></rh4></rh4>
+            <p><%= description %> </p>
+            <ul>
+              <% for (var key in attendState) { %>
+              <li class="item<%= key %>"><%= key %>: <%= attendState[key] %></li>
+              <% } %>
+            </ul>
+          </div>
+          <div class="modal-footer">
+
+            <a href="<%= roomId %>/download">
+              <button type="button" class="waves-effect waves-light light-blue btn">Mtg Attendance Logs Download</button>
+            </a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">CLOSE</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- <div>
+    <form>
+        First name:
+        <input type= "text" id="firstname" name="firstname"> <br> <br>
+        Last name: <input type= "text" id="lastname" name="lastname"> <br> <br> <br>
+        <input type = "button" onclick="showName()" value="submit">
+        <span id="show"></span>
+    </form>
+
+  </div> -->
+  <div class="northcentral card cyan lighten-5">
+
+    <div class="row">
+      <div class="card-content col s2 m2 xl3 cyan darken-1" id="damalog">
+        <rh3>弾</rh3> <rh3>幕</rh3> <div class="re r3">!</div>
+      </div>
+      <div class="col s7 m10 l10 xl9">
+        <div class="row">
+          <div class="row col l12 xl6" id="danmak">
+          <div class="input-field col s12 m4 ">
+              <select id="size">
+                <option id="size" value=18>Small</option>
+                <option id="size" value=25>Middle</option>
+                <option id="size" value=36>Large</option>
+              </select>
+            </div>
+            <div class="input-field col s12 m4">
+              <select id="mode">
+                <option id="mode" value=1>Top-anchored scrolling</option>
+                <option id="mode" value=2>Bottom-anchored scrolling</option>
+                <option id="mode" value=4>Bottom-anchored static</option>
+                <option id="mode" value=5>Top-anchored static</option>
+              </select>
+            </div>
+            <div class="input-field col s12 m4">
+              <select id="color">
+                <option value="FF0000">Red</option>
+                <option value="FFFF00">Yellow</option>
+                <option value="008000">Green</option>
+                <option value="0000FF">Blue</option>
+                <option value="800080">Purple</option>
+                <option value="FFFFFF">White</option>
+              </select>
+            </div>
+          </div>
+          <!-- <br><br>   -->
+          <div class="row col l12 xl6">
+            <input id="msg" type="text" placeholder="Tell us your feeling!" class="input-field col s9"></input>
+            <button id="btnSend" class="btn col s2">発射!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="northeast card">
+    <ul class="tabs tabs-fixed-width tabs-transparent">
+      <li class="tab"><a href="#pubmsg" >Pub Chat</a></li>
+      <li class="tab"><a href="#primsg" >Private Chat</a></li>
+      <li class="indicator teal" style="z-index:1"" ></li>
+    </ul>
+    <!-- <div class="card-content grey lighten-4"> -->
+      <div id="pubmsg">
+        <div id="chat container">
+          <!-- <rh2>send chat from here</rh2> -->
+          <ul id="messages"></ul>
+            <form action="" id="chat-message">
+              <!-- <p>public chat</p> -->
+              <footer class="row">
+                <input id="cm" autocomplete="off" class="input-field col s12 m10" />
+                <button class="btn col s12 m2  teal darken-2 waves-effect waves-light">Send</button>
+              </footer>
+            </form>
+        </div>
+      </div>
+      <div id="primsg" style="display: block;">
+        <div id="member-container">
+          <!-- <rh2>private chat</rh2> -->
+          <ul id="messagep"></ul>
+          <form action="" id="member-list">
+            <button class="btn teal darken-2 waves-effect waves-light">load member list</button>
+          </form>
+          <ul id = "member-in-room"></ul>
+        </div>
+      </div>
+
+    <!-- </div> -->
+  </div>
+  <script>
+    // script for modal and tabs' initialization
+   document.addEventListener('DOMContentLoaded', function() {
+    var modaloption={
+        startingTop:'20%', endingTop:'40%'
+      }
+    var modalem = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(modalem, modaloption);
+  });
+    $(document).ready(function(){
+      $('ul.tabs').tabs();
+    });
+    $(document).ready(function(){
+      $('ul.tabs').tabs('select_tab', 'pubmsg');
+    });
+  </script>
+  <div class="centralwest card">
+    <div class="row green lighten-5">
+      <div class="col s7 m10 l10 xl9 xxl3">
+        <div class="left" id="lefty">
+          <div id="startButton1" >
+          </div>
+          <rh4>Preview</rh4>
+          <video id="preview" width="160" height="120" autoplay muted></video>
+          <div id="startButton" class="waves-effect waves-light btn-flat">
+            Start
+          </div>
+          <div id="stopButton" class="btn-flat">
+            Stop
+          </div>
+        </div>
+        <div class="left">
+
+          <input type="file" name="file" class="waves-effect waves-light btn" onchange="selectedVideo(this);"/>
+          <rh4>Recording</rh4>
+          <video id="recording" width="160" height="120" controls></video>
+          <a id="downloadButton" class="btn green darken-4">
+            Download
+          </a>
+        </div>
+        <div class="left">
+
+          <div id="startButton1" >
+          </div>
+          <rh4>Local</rh4>
+
+          <video autoplay id="videodemo" width="160" height="120" controls>
+                  <source id="source" type="video/mp4">
+
+          </video>
+        </div>
+        <div class="bottom">
+          <p><pre id="log"></pre></p>
+        </div>
+      </div>
+      <div class="card-content col s2 m2 xl3 white" id="prevlog">
+        <br><rh3>試</rh3> <rh3>写</rh3> <div class="re r3">:</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src='/danmaku-script.js'></script>
+  <script>
+    //<!--
+    const ROOM_ID = "<%= roomId %>"
+    const uid = "<%= uid %>"
+    function selectedVideo(self) {
+      var file = self.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+          var src = e.target.result;
+          var videodemo = document.getElementById("videodemo");
+          var source = document.getElementById("source");
+
+          source.setAttribute("src", src);
+          videodemo.load()
+          videodemo.play()
+      };
+      reader.readAsDataURL(file);
+    }
+    //------chat function--------------
+    $(function(){
+      var socket = io.connect();
+      $('#chat-message').submit(function(e){
+        e.preventDefault(); // prevents page reloading
+        var message = {
+          content : $('#cm').val(),
+          uid: uid,
+          roomId: ROOM_ID,
+        };
+        socket.emit('chat-message', message);
+        $('#cm').val('');
+        return false;
+      });
+      $('#member-list').submit(function(e) {
+        e.preventDefault();
+        var reqArg = {
+          uid : uid,
+          roomId: ROOM_ID
+        };
+        socket.emit('member-list-requested', reqArg);
+        return false;
+      });
+    });
+    //-->
+  </script>
+  <div class="central">
+    <table border="0">
+      <tr>
+        <th>
+          <div class="bgm">
+            <!-- bgm part -->
+          <label id=bgm_sta>Select background music</label>
+          <form action="/bgm_upload" method="post" enctype="multipart/form-data" target=“_self” name= 'ROOM_ID'>
+            <input type="hidden" id="textrid" name="rid" class="txt"/>
+            <input type="hidden" id="texthos" name="hos" class="txt"/>
+            <input type="file" class= "waves-effect waves-light btn" name="file" id="bgm_file">
+            <input type="submit" class= "waves-effect waves-light btn" value="BGM_upload" id="bgm_up"/></form>
+            <br />
+            <audio id="bgmset" controls="controls" loop>
+              Your browser does not support the audio element.
+            </audio>
+          <!-- <button id="bgmplay" type="hidden">bgm</button> -->
+          </div>
+
+        </th>
+        <th>
+          <!-- <rh3>音</rh3> -->
+          <i id ="bgmnote" class="large material-icons" >music_note</i>
+        </th>
+      </tr>
+    </table>
+  </div>
+  <!-- bgm part over -->
+</div>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+</body>
+</html>

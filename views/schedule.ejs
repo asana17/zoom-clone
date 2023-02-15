@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Schedule</title>
+  <script>
+    let mtgRef = "<%= mtg_ref %>"
+    let uid = "<%= uid %>"
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+  <script src="schedule-script.js"></script>
+  <script src="../controllers/schedule.js"></script>
+  <link rel="stylesheet" href="./pbl_css/schedule.css">
+</head>
+
+<body>
+  <h2>Schedule</h2>
+  <div class="content">
+    <div id="blk1">
+      <h5 id="day">Your Meeting</h5>
+      <div class="row"><% for (var key in mtg_dict) { %>
+        <div class="col s12">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title"><%= key %></span><% for (var key2 in mtg_dict[key]) { %>
+              <div>
+                <a href="/<%= key2 %>?uid=<%= uid %>&username=<%= username %>" id="roomlink"><%= mtg_dict[key][key2]["name"] %></a>
+                <p>
+                  <ul>
+                    <li>Description: <%= mtg_dict[key][key2]["description"] %></li>
+                    <li>Start: <%= mtg_dict[key][key2]["start"].toDate().toTimeString() %></li>
+                    <li>End: <%= mtg_dict[key][key2]["end"].toDate().toTimeString() %></li>
+                  </ul>
+                </p>
+              </div><% } %>
+            </div>
+          </div>
+        </div><% } %>
+      </div>
+    </div>
+    <div id="blk2">
+      <h5 id = "day">Create New Meeting</h5>
+      <div>
+        <form action="/scheduleupdate/?uid=<%= uid %>&username=<%= username %>" method="post">
+          <div class="row">
+            <div>
+              <label for="name">Meeting Name</label>
+              <input type="text" id="name" name="name">
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="description">Meeting Description</label>
+              <input type="text" id="description" name="description">
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="participants">Participants user id (Separate with commas ',')</label>
+              <input type="text" multiple id="participants" name="participants">
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="start">Meeting Start Time: </label>
+              <input type="datetime-local" id="start" name="start">
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="end">Meeting End Time</label>
+              <input type="datetime-local" id="end" name="end">
+            </div>
+          </div>
+          <!-- <div class="row">
+            <div>
+              <label for="repeat">Meeting Repeatation</label>
+              <select id="repeat" name="repeat">
+                <option value="null">Not Repeat</option>
+                <option value="weekly">Weekly</option>
+                <option value="everyday">Everyday</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="row">
+            <div><input type="submit" value="submit" class="btn waves-effect waves-light"></div>
+            <p style="margin: 5px"></p>
+            <div><input type="reset" value="reset" class="btn waves-effect waves-light"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div>
+    <br><a href="/Home" class="waves-effect waves-light btn-small"><i class="material-icons left">home</i>Home</a>
+  </div>
+</body>
+
+</html>
