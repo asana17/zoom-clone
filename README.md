@@ -1,4 +1,5 @@
 # zoom-clone
+This repository is copied from pbl-2020-pbl-group4-master.
 
 ## objectives
 make zoom-like application with some new fuction
